@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('Warden Dashboard')"></head>
+<body class="warden-layout">
+    <nav th:replace="fragments/layout :: wardenSidebar"></nav>
+    
+    <div class="main-content">
+        <header th:replace="fragments/layout :: header"></header>
+        
+        <div class="dashboard-container">
+            <h1>Warden Dashboard</h1>
+            
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <!-- SVG hostel icon can be added here -->
+                        <!-- <img th:src="@{/images/hostel-icon.svg}" alt="Hostel"> -->
+                    </div>
+                    <div class="stat-info">
+                        <h3>Assigned Hostel</h3>
+                        <p class="stat-value" th:text="${hostel != null ? hostel.name : 'Not Assigned'}">Boys Hostel A</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <!-- SVG student icon can be added here -->
+                        <!-- <img th:src="@{/images/student-icon.svg}" alt="Students"> -->
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Students</h3>
+                        <p class="stat-value" th:text="${studentCount}">0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <!-- SVG room icon can be added here -->
+                        <!-- <img th:src="@{/images/room-icon.svg}" alt="Rooms"> -->
+                    </div>
+                    <div class="stat-info">
+                        <h3>Available Rooms</h3>
+                        <p class="stat-value" th:text="${availableRoomCount}">0</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <!-- SVG request icon can be added here -->
+                        <!-- <img th:src="@{/images/request-icon.svg}" alt="Requests"> -->
+                    </div>
+                    <div class="stat-info">
+                        <h3>Pending Requests</h3>
+                        <p class="stat-value" th:text="${pendingRequestCount}">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-sections">
+                <div class="section recent-requests">
+                    <h2>Recent Room Requests</h2>
+                    <div class="request-list">
+                        <div th:if="${recentRequests.empty}" class="no-data">No recent requests</div>
+                        <div th:each="request : ${recentRequests}" class="request-item">
+                            <div class="request-info">
+                                <h3 th:text="${request.student.name}">Student Name</h3>
+                                <p>Room: <span th:text="${request.room.number}">101</span></p>
+                                <p>Requested on: <span th:text="${#dates.format(request.requestDate, 'dd MMM yyyy')}">01 Jan 2023</span></p>
+                            </div>
+                            <div class="request-actions">
+                                <a th:href="@{/warden/requests/{id}/view(id=${request.id})}" class="btn btn-sm btn-primary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="view-all">
+                        <a th:href="@{/warden/requests}" class="btn btn-link">View All Requests</a>
+                    </div>
+                </div>
+                
+                <div class="section quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="action-buttons">
+                        <a th:href="@{/warden/requests}" class="action-btn">
+                            <!-- SVG request icon can be added here -->
+                            <!-- <img th:src="@{/images/request-icon.svg}" alt="Requests"> -->
+                            Manage Requests
+                        </a>
+                        <a th:href="@{/warden/students}" class="action-btn">
+                            <!-- SVG student icon can be added here -->
+                            <!-- <img th:src="@{/images/student-icon.svg}" alt="Students"> -->
+                            View Students
+                        </a>
+                        <a th:href="@{/warden/hostel}" class="action-btn">
+                            <!-- SVG hostel icon can be added here -->
+                            <!-- <img th:src="@{/images/hostel-icon.svg}" alt="Hostel"> -->
+                            Hostel Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer th:replace="fragments/layout :: footer"></footer>
+    </div>
+</body>
+</html>

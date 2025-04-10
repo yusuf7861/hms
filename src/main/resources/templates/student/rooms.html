@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('Available Rooms')"></head>
+<body class="student-layout">
+    <nav th:replace="fragments/layout :: studentSidebar"></nav>
+    
+    <div class="main-content">
+        <header th:replace="fragments/layout :: header"></header>
+        
+        <div class="content-container">
+            <div class="page-header">
+                <h1>Available Rooms</h1>
+            </div>
+            
+            <div class="filter-section">
+                <form th:action="@{/student/rooms}" method="get" class="filter-form">
+                    <div class="form-group">
+                        <select name="hostelId">
+                            <option value="">All Hostels</option>
+                            <option th:each="hostel : ${hostels}" 
+                                    th:value="${hostel.id}" 
+                                    th:text="${hostel.name}"
+                                    th:selected="${param.hostelId == hostel.id}">Boys Hostel A</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="floor">
+                            <option value="">All Floors</option>
+                            <option th:each="floor : ${floors}" 
+                                    th:value="${floor}" 
+                                    th:text="${'Floor ' + floor}"
+                                    th:selected="${param.floor == floor}">Floor 1</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="type">
+                            <option value="">All Types</option>
+                            <option value="Single" th:selected="${param.type == 'Single'}">Single</option>
+                            <option value="Double" th:selected="${param.type == 'Double'}">Double</option>
+                            <option value="Triple" th:selected="${param.type == 'Triple'}">Triple</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-filter">
+                        <!-- SVG filter icon can be added here -->
+                        <!-- <img th:src="@{/images/filter-icon.svg}" alt="Filter"> -->
+                        Filter
+                    </button>
+                </form>
+            </div>
+            
+            <div class="room-grid">
+                <div th:if="${rooms.empty}" class="no-data">No available rooms found</div>
+                <div th:each="room : ${rooms}" class="room-card">
+                    <div class="room-header">
+                        <div class="room-number" th:text="${room.number}">101</div>
+                        <div class="room-hostel" th:text="${room.hostel.name}">Boys Hostel A</div>
+                    </div>
+                    <div class="room-image">
+                        <!-- Room image can be added here -->
+                        <!-- <img th:src="${room.image != null ? room.image : '/images/default-room.jpg'}" alt="Room Image"> -->
+                        <!-- SVG room icon can be added here -->
+                        <!-- <img th:src="@{/images/room-icon.svg}" alt="Room"> -->
+                    </div>
+                    <div class="room-details">
+                        <div class="detail-row">
+                            <div class="detail-label">Type:</div>
+                            <div class="detail-value" th:text="${room.type}">Single</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Floor:</div>
+                            <div class="detail-value" th:text="${room.floor}">1</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Facilities:</div>
+                            <div class="detail-value" th:text="${room.facilities}">Attached Bathroom, Study Table</div>
+                        </div>
+                    </div>
+                    <div class="room-actions">
+                        <a th:href="@{/student/rooms/{id}/view(id=${room.id})}" class="btn btn-secondary">View Details</a>
+                        <a th:href="@{/student/rooms/{id}/request(id=${room.id})}" class="btn btn-primary">Request Room</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pagination" th:if="${totalPages > 1}">
+                <a th:href="@{/student/rooms(page=1, hostelId=${param.hostelId}, floor=${param.floor}, type=${param.type})}" 
+                   class="page-link" th:classappend="${currentPage == 1 ? 'disabled' : ''}">First</a>
+                   
+                <a th:href="@{/student/rooms(page=${currentPage - 1}, hostelId=${param.hostelId}, floor=${param.floor}, type=${param.type})}" 
+                   class="page-link" th:classappend="${currentPage == 1 ? 'disabled' : ''}">Previous</a>
+                   
+                <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+                    <a th:href="@{/student/rooms(page=${i}, hostelId=${param.hostelId}, floor=${param.floor}, type=${param.type})}" 
+                       class="page-link" th:classappend="${currentPage == i ? 'active' : ''}" th:text="${i}">1</a>
+                </span>
+                
+                <a th:href="@{/student/rooms(page=${currentPage + 1}, hostelId=${param.hostelId}, floor=${param.floor}, type=${param.type})}" 
+                   class="page-link" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">Next</a>
+                   
+                <a th:href="@{/student/rooms(page=${totalPages}, hostelId=${param.hostelId}, floor=${param.floor}, type=${param.type})}" 
+                   class="page-link" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">Last</a>
+            </div>
+        </div>
+        
+        <footer th:replace="fragments/layout :: footer"></footer>
+    </div>
+</body>
+</html>

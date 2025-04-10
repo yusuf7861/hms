@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('Hostel Details')"></head>
+<body class="warden-layout">
+    <nav th:replace="fragments/layout :: wardenSidebar"></nav>
+    
+    <div class="main-content">
+        <header th:replace="fragments/layout :: header"></header>
+        
+        <div class="content-container">
+            <div class="page-header">
+                <h1>Hostel Details</h1>
+            </div>
+            
+            <div class="detail-container">
+                <div class="detail-card">
+                    <div class="detail-header">
+                        <h2 th:text="${hostel.name}">Boys Hostel A</h2>
+                    </div>
+                    
+                    <div class="detail-content">
+                        <div class="detail-row">
+                            <div class="detail-label">Hostel ID:</div>
+                            <div class="detail-value" th:text="${hostel.id}">H001</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Type:</div>
+                            <div class="detail-value" th:text="${hostel.type}">Boys</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Address:</div>
+                            <div class="detail-value" th:text="${hostel.address}">123 University Street, City</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Total Rooms:</div>
+                            <div class="detail-value" th:text="${hostel.totalRooms}">100</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Total Capacity:</div>
+                            <div class="detail-value" th:text="${hostel.capacity}">200</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Available Rooms:</div>
+                            <div class="detail-value" th:text="${hostel.availableRooms}">25</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Occupied Rooms:</div>
+                            <div class="detail-value" th:text="${hostel.totalRooms - hostel.availableRooms}">75</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Status:</div>
+                            <div class="detail-value">
+                                <span th:class="${hostel.status == 'active' ? 'status-active' : 'status-inactive'}" 
+                                      th:text="${hostel.status}">Active</span>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Description:</div>
+                            <div class="detail-value" th:text="${hostel.description}">A modern hostel with all facilities.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rooms-section">
+                    <h2>Room Availability</h2>
+                    
+                    <div class="filter-section">
+                        <form th:action="@{/warden/hostel}" method="get" class="filter-form">
+                            <div class="form-group">
+                                <select name="floor">
+                                    <option value="">All Floors</option>
+                                    <option th:each="floor : ${floors}" 
+                                            th:value="${floor}" 
+                                            th:text="${'Floor ' + floor}"
+                                            th:selected="${param.floor == floor}">Floor 1</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="status">
+                                    <option value="">All Status</option>
+                                    <option value="available" th:selected="${param.status == 'available'}">Available</option>
+                                    <option value="occupied" th:selected="${param.status == 'occupied'}">Occupied</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-filter">
+                                <!-- SVG filter icon can be added here -->
+                                <!-- <img th:src="@{/images/filter-icon.svg}" alt="Filter"> -->
+                                Filter
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="room-grid">
+                        <div th:each="room : ${rooms}" class="room-card" th:classappend="${room.status == 'available' ? 'room-available' : 'room-occupied'}">
+                            <div class="room-number" th:text="${room.number}">101</div>
+                            <div class="room-details">
+                                <div class="room-type" th:text="${room.type}">Single</div>
+                                <div class="room-floor">Floor <span th:text="${room.floor}">1</span></div>
+                                <div class="room-status" th:text="${room.status}">Available</div>
+                            </div>
+                            <div class="room-actions">
+                                <a th:href="@{/warden/rooms/{id}/view(id=${room.id})}" class="btn btn-sm btn-primary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pagination" th:if="${totalPages > 1}">
+                        <a th:href="@{/warden/hostel(page=1, floor=${param.floor}, status=${param.status})}" 
+                           class="page-link" th:classappend="${currentPage == 1 ? 'disabled' : ''}">First</a>
+                           
+                        <a th:href="@{/warden/hostel(page=${currentPage - 1}, floor=${param.floor}, status=${param.status})}" 
+                           class="page-link" th:classappend="${currentPage == 1 ? 'disabled' : ''}">Previous</a>
+                           
+                        <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+                            <a th:href="@{/warden/hostel(page=${i}, floor=${param.floor}, status=${param.status})}" 
+                               class="page-link" th:classappend="${currentPage == i ? 'active' : ''}" th:text="${i}">1</a>
+                        </span>
+                        
+                        <a th:href="@{/warden/hostel(page=${currentPage + 1}, floor=${param.floor}, status=${param.status})}" 
+                           class="page-link" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">Next</a>
+                           
+                        <a th:href="@{/warden/hostel(page=${totalPages}, floor=${param.floor}, status=${param.status})}" 
+                           class="page-link" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">Last</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer th:replace="fragments/layout :: footer"></footer>
+    </div>
+</body>
+</html>

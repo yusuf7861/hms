@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('Edit Profile')"></head>
+<body class="student-layout">
+    <nav th:replace="fragments/layout :: studentSidebar"></nav>
+    
+    <div class="main-content">
+        <header th:replace="fragments/layout :: header"></header>
+        
+        <div class="content-container">
+            <div class="page-header">
+                <h1>Edit Profile</h1>
+                <a th:href="@{/student/profile}" class="btn btn-secondary">
+                    <!-- SVG back icon can be added here -->
+                    <!-- <img th:src="@{/images/back-icon.svg}" alt="Back"> -->
+                    Back to Profile
+                </a>
+            </div>
+            
+            <div class="form-container">
+                <form th:action="@{/student/profile/update}" method="post" th:object="${student}" class="form" enctype="multipart/form-data">
+                    <div class="form-section">
+                        <h2>Personal Information</h2>
+                        
+                        <div class="form-group profile-image-upload">
+                            <label>Profile Image</label>
+                            <div class="image-preview">
+                                <!-- SVG user icon can be added here -->
+                                <!-- <img th:src="${student.profileImage != null ? student.profileImage : '/images/default-avatar.svg'}" alt="Profile Image" id="imagePreview"> -->
+                            </div>
+                            <input type="file" id="profileImage" name="profileImage" accept="image/*">
+                            <label for="profileImage" class="btn btn-secondary">Choose Image</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" th:field="*{name}" required>
+                            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" th:field="*{email}" required>
+                                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" th:field="*{phone}" required>
+                                <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dateOfBirth">Date of Birth</label>
+                                <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}" required>
+                                <span th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}" class="error"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" th:field="*{gender}" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="error"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea id="address" th:field="*{address}" rows="3" required></textarea>
+                            <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Academic Information</h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="course">Course</label>
+                                <input type="text" id="course" th:field="*{course}" required>
+                                <span th:if="${#fields.hasErrors('course')}" th:errors="*{course}" class="error"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="year">Year</label>
+                                <select id="year" th:field="*{year}" required>
+                                    <option value="">Select Year</option>
+                                    <option value="1st Year">1st Year</option>
+                                    <option value="2nd Year">2nd Year</option>
+                                    <option value="3rd Year">3rd Year</option>
+                                    <option value="4th Year">4th Year</option>
+                                    <option value="5th Year">5th Year</option>
+                                </select>
+                                <span th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="error"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="department">Department</label>
+                            <input type="text" id="department" th:field="*{department}" required>
+                            <span th:if="${#fields.hasErrors('department')}" th:errors="*{department}" class="error"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2>Emergency Contact</h2>
+                        
+                        <div class="form-group">
+                            <label for="emergencyContactName">Name</label>
+                            <input type="text" id="emergencyContactName" th:field="*{emergencyContactName}" required>
+                            <span th:if="${#fields.hasErrors('emergencyContactName')}" th:errors="*{emergencyContactName}" class="error"></span>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="emergencyContactRelation">Relationship</label>
+                                <input type="text" id="emergencyContactRelation" th:field="*{emergencyContactRelation}" required>
+                                <span th:if="${#fields.hasErrors('emergencyContactRelation')}" th:errors="*{emergencyContactRelation}" class="error"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="emergencyContactPhone">Phone Number</label>
+                                <input type="tel" id="emergencyContactPhone" th:field="*{emergencyContactPhone}" required>
+                                <span th:if="${#fields.hasErrors('emergencyContactPhone')}" th:errors="*{emergencyContactPhone}" class="error"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emergencyContactAddress">Address</label>
+                            <textarea id="emergencyContactAddress" th:field="*{emergencyContactAddress}" rows="3" required></textarea>
+                            <span th:if="${#fields.hasErrors('emergencyContactAddress')}" th:errors="*{emergencyContactAddress}" class="error"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <footer th:replace="fragments/layout :: footer"></footer>
+    </div>
+    
+    <script th:src="@{/js/student/profile-edit.js}"></script>
+</body>
+</html>

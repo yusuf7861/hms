@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('Manage Hostels')"></head>
+<body class="admin-layout">
+    <nav th:replace="fragments/layout :: adminSidebar"></nav>
+    
+    <div class="main-content">
+        <header th:replace="fragments/layout :: header"></header>
+        
+        <div class="content-container">
+            <div class="page-header">
+                <h1>Manage Hostels</h1>
+                <a th:href="@{/admin/hostels/add}" class="btn btn-primary">
+                    <!-- SVG add icon can be added here -->
+                    <!-- <img th:src="@{/images/add-icon.svg}" alt="Add"> -->
+                    Add New Hostel
+                </a>
+            </div>
+            
+            <div class="filter-section">
+                <form th:action="@{/admin/hostels}" method="get" class="filter-form">
+                    <div class="form-group">
+                        <input type="text" name="search" th:value="${param.search}" placeholder="Search hostels...">
+                    </div>
+                    <div class="form-group">
+                        <select name="status">
+                            <option value="">All Status</option>
+                            <option value="active" th:selected="${param.status == 'active'}">Active</option>
+                            <option value="inactive" th:selected="${param.status == 'inactive'}">Inactive</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-filter">
+                        <!-- SVG filter icon can be added here -->
+                        <!-- <img th:src="@{/images/filter-icon.svg}" alt="Filter"> -->
+                        Filter
+                    </button>
+                </form>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Hostel ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Capacity</th>
+                            <th>Available Rooms</th>
+                            <th>Warden</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${hostels.empty}">
+                            <td colspan="8" class="no-data">No hostels found</td>
+                        </tr>
+                        <tr th:each="hostel : ${hostels}">
+                            <td th:text="${hostel.id}">H001</td>
+                            <td th:text="${hostel.name}">Boys Hostel A</td>
+                            <td th:text="${hostel.type}">Boys</td>
+                            <td th:text="${hostel.capacity}">100</td>
+                            <td th:text="${hostel.availableRooms}">25</td>
+                            <td th:text="${hostel.warden != null ? hostel.warden.name : 'Not Assigned'}">John Doe</td>
+                            <td>
+                                <span th:class="${hostel.status == 'active' ? 'status-active' : 'status-inactive'}" 
+                                      th:text="${hostel.status}">Active</span>
+                            </td>
+                            <td class="actions">
+                                <a th:href="@{/admin/hostels/{id}/view(id=${hostel.id})}" class="btn-icon" title="View">
+                                    <!-- SVG view icon can be added here -->
+                                    <!-- <img th:src="@{/images/view-icon.svg}" alt="View"> -->
+                                </a>
+                                <a th:href="@{/admin/hostels/{id}/edit(id=${hostel.id})}" class="btn-icon" title="Edit">
+                                    <!-- SVG edit icon can be added here -->
+                                    <!-- <img th:src="@{/images/edit-icon.svg}" alt="Edit"> -->
+                                </a>
+                                <button class="btn-icon delete-btn" th:data-id="${hostel.id}" title="Delete">
+                                    <!-- SVG delete icon can be added here -->
+                                    <!-- <img th:src="@{/images/delete-icon.svg}" alt="Delete"> -->
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pagination" th:if="${totalPages > 1}">
+                <a th:href="@{/admin/hostels(page=1, search=${param.search}, status=${param.status})}" 
+                   class="page-link" th:classappend="${currentPage == 1 ? 'disabled' : ''}">First</a>
+                   
+                <a th:href="@{/admin/hostels(page=${currentPage - 1}, search=${param.search}, status=${param.status})}" 
+                   class="page-link" th:classappend="${currentPage == 1 ? 'disabled' : ''}">Previous</a>
+                   
+                <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+                    <a th:href="@{/admin/hostels(page=${i}, search=${param.search}, status=${param.status})}" 
+                       class="page-link" th:classappend="${currentPage == i ? 'active' : ''}" th:text="${i}">1</a>
+                </span>
+                
+                <a th:href="@{/admin/hostels(page=${currentPage + 1}, search=${param.search}, status=${param.status})}" 
+                   class="page-link" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">Next</a>
+                   
+                <a th:href="@{/admin/hostels(page=${totalPages}, search=${param.search}, status=${param.status})}" 
+                   class="page-link" th:classappend="${currentPage == totalPages ? 'disabled' : ''}">Last</a>
+            </div>
+        </div>
+        
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <h2>Confirm Delete</h2>
+                <p>Are you sure you want to delete this hostel? This action cannot be undone.</p>
+                <div class="modal-actions">
+                    <button id="cancelDelete" class="btn btn-secondary">Cancel</button>
+                    <form id="deleteForm" th:action="@{/admin/hostels/delete}" method="post">
+                        <input type="hidden" id="deleteId" name="id">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <footer th:replace="fragments/layout :: footer"></footer>
+    </div>
+    
+    <script th:src="@{/js/admin/hostels.js}"></script>
+</body>
+</html>

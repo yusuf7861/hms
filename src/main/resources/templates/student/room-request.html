@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('Request Room')"></head>
+<body class="student-layout">
+    <nav th:replace="fragments/layout :: studentSidebar"></nav>
+    
+    <div class="main-content">
+        <header th:replace="fragments/layout :: header"></header>
+        
+        <div class="content-container">
+            <div class="page-header">
+                <h1>Request Room</h1>
+                <a th:href="@{/student/rooms}" class="btn btn-secondary">
+                    <!-- SVG back icon can be added here -->
+                    <!-- <img th:src="@{/images/back-icon.svg}" alt="Back"> -->
+                    Back to Rooms
+                </a>
+            </div>
+            
+            <div class="form-container">
+                <div class="room-summary-card">
+                    <h2>Room Summary</h2>
+                    <div class="room-summary">
+                        <div class="room-number" th:text="${room.number}">101</div>
+                        <div class="room-details">
+                            <div class="detail-row">
+                                <div class="detail-label">Hostel:</div>
+                                <div class="detail-value" th:text="${room.hostel.name}">Boys Hostel A</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Floor:</div>
+                                <div class="detail-value" th:text="${room.floor}">1</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Type:</div>
+                                <div class="detail-value" th:text="${room.type}">Single</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form th:action="@{/student/rooms/{id}/request(id=${room.id})}" method="post" class="form">
+                    <div class="form-group">
+                        <label for="reason">Reason for Request:</label>
+                        <textarea id="reason" name="reason" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="duration">Expected Duration of Stay:</label>
+                        <select id="duration" name="duration" required>
+                            <option value="">Select Duration</option>
+                            <option value="1 Semester">1 Semester</option>
+                            <option value="2 Semesters">2 Semesters</option>
+                            <option value="1 Year">1 Year</option>
+                            <option value="Until Graduation">Until Graduation</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="specialRequirements">Special Requirements (if any):</label>
+                        <textarea id="specialRequirements" name="specialRequirements" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="termsAgreed" name="termsAgreed" required>
+                            <label for="termsAgreed">I agree to the hostel rules and regulations</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                        <button type="submit" class="btn btn-primary">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <footer th:replace="fragments/layout :: footer"></footer>
+    </div>
+</body>
+</html>

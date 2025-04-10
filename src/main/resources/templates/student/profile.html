@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('My Profile')"></head>
+<body class="student-layout">
+    <nav th:replace="fragments/layout :: studentSidebar"></nav>
+    
+    <div class="main-content">
+        <header th:replace="fragments/layout :: header"></header>
+        
+        <div class="content-container">
+            <div class="page-header">
+                <h1>My Profile</h1>
+                <a th:href="@{/student/profile/edit}" class="btn btn-primary">
+                    <!-- SVG edit icon can be added here -->
+                    <!-- <img th:src="@{/images/edit-icon.svg}" alt="Edit"> -->
+                    Edit Profile
+                </a>
+            </div>
+            
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <!-- SVG user icon can be added here -->
+                            <!-- <img th:src="${student.profileImage != null ? student.profileImage : '/images/default-avatar.svg'}" alt="Profile Image"> -->
+                        </div>
+                        <div class="profile-name">
+                            <h2 th:text="${student.name}">John Doe</h2>
+                            <p class="student-id" th:text="${student.studentId}">S12345</p>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-content">
+                        <div class="profile-section">
+                            <h3>Personal Information</h3>
+                            <div class="detail-row">
+                                <div class="detail-label">Email:</div>
+                                <div class="detail-value" th:text="${student.email}">john@example.com</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Phone:</div>
+                                <div class="detail-value" th:text="${student.phone}">+1234567890</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Date of Birth:</div>
+                                <div class="detail-value" th:text="${#dates.format(student.dateOfBirth, 'dd MMM yyyy')}">01 Jan 2000</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Gender:</div>
+                                <div class="detail-value" th:text="${student.gender}">Male</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Address:</div>
+                                <div class="detail-value" th:text="${student.address}">123 Main St, City</div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-section">
+                            <h3>Academic Information</h3>
+                            <div class="detail-row">
+                                <div class="detail-label">Course:</div>
+                                <div class="detail-value" th:text="${student.course}">Computer Science</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Year:</div>
+                                <div class="detail-value" th:text="${student.year}">2nd Year</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Department:</div>
+                                <div class="detail-value" th:text="${student.department}">Engineering</div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-section" th:if="${student.room != null}">
+                            <h3>Hostel Information</h3>
+                            <div class="detail-row">
+                                <div class="detail-label">Hostel:</div>
+                                <div class="detail-value" th:text="${student.room.hostel.name}">Boys Hostel A</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Room Number:</div>
+                                <div class="detail-value" th:text="${student.room.number}">101</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Room Type:</div>
+                                <div class="detail-value" th:text="${student.room.type}">Single</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Assigned On:</div>
+                                <div class="detail-value" th:text="${#dates.format(student.roomAssignedDate, 'dd MMM yyyy')}">01 Jan 2023</div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-section">
+                            <h3>Emergency Contact</h3>
+                            <div class="detail-row">
+                                <div class="detail-label">Name:</div>
+                                <div class="detail-value" th:text="${student.emergencyContactName}">Jane Doe</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Relationship:</div>
+                                <div class="detail-value" th:text="${student.emergencyContactRelation}">Parent</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Phone:</div>
+                                <div class="detail-value" th:text="${student.emergencyContactPhone}">+1234567890</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Address:</div>
+                                <div class="detail-value" th:text="${student.emergencyContactAddress}">123 Main St, City</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer th:replace="fragments/layout :: footer"></footer>
+    </div>
+</body>
+</html>

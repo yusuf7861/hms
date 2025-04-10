@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head(${hostel.id != null ? 'Edit Hostel' : 'Add Hostel'})"></head>
+<body class="admin-layout">
+    <nav th:replace="fragments/layout :: adminSidebar"></nav>
+    
+    <div class="main-content">
+        <header th:replace="fragments/layout :: header"></header>
+        
+        <div class="content-container">
+            <div class="page-header">
+                <h1 th:text="${hostel.id != null ? 'Edit Hostel' : 'Add New Hostel'}">Add New Hostel</h1>
+                <a th:href="@{/admin/hostels}" class="btn btn-secondary">
+                    <!-- SVG back icon can be added here -->
+                    <!-- <img th:src="@{/images/back-icon.svg}" alt="Back"> -->
+                    Back to Hostels
+                </a>
+            </div>
+            
+            <div class="form-container">
+                <form th:action="${hostel.id != null ? '/admin/hostels/update' : '/admin/hostels/save'}" 
+                      method="post" th:object="${hostel}" class="form">
+                    
+                    <input type="hidden" th:field="*{id}" th:if="${hostel.id != null}">
+                    
+                    <div class="form-group">
+                        <label for="name">Hostel Name</label>
+                        <input type="text" id="name" th:field="*{name}" required>
+                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="type">Hostel Type</label>
+                        <select id="type" th:field="*{type}" required>
+                            <option value="">Select Type</option>
+                            <option value="Boys">Boys Hostel</option>
+                            <option value="Girls">Girls Hostel</option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="error"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" th:field="*{address}" rows="3" required></textarea>
+                        <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></span>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="totalRooms">Total Rooms</label>
+                            <input type="number" id="totalRooms" th:field="*{totalRooms}" min="1" required>
+                            <span th:if="${#fields.hasErrors('totalRooms')}" th:errors="*{totalRooms}" class="error"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="capacity">Total Capacity</label>
+                            <input type="number" id="capacity" th:field="*{capacity}" min="1" required>
+                            <span th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}" class="error"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="wardenId">Assign Warden</label>
+                        <select id="wardenId" th:field="*{wardenId}">
+                            <option value="">Select Warden</option>
+                            <option th:each="warden : ${wardens}" 
+                                    th:value="${warden.id}" 
+                                    th:text="${warden.name}">Warden Name</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" th:field="*{status}" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="error"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" th:field="*{description}" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                        <button type="submit" class="btn btn-primary">
+                            <span th:text="${hostel.id != null ? 'Update Hostel' : 'Save Hostel'}">Save Hostel</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <footer th:replace="fragments/layout :: footer"></footer>
+    </div>
+</body>
+</html>
