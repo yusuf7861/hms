@@ -51,6 +51,10 @@ public class StudentDetails {
     @JoinColumn(name = "hostel_id")  // foreign key column
     private Hostel hostel;
 
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
+
     public void setStudentId(Long userId) {
     }
 

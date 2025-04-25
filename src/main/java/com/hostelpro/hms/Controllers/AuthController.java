@@ -75,5 +75,4 @@ public class AuthController {
         session.invalidate(); // Destroys the session
         return ResponseEntity.ok("User logged out successfully.");
     }
-
 }

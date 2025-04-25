@@ -58,12 +58,12 @@ public class SecurityConfig {
 //                        .successHandler(customLoginSuccessHandler)
 //                        .permitAll()
 //                )
-                .logout(form -> form
-
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout=true")
-                        .deleteCookies("JSESSIONID")
-                        .permitAll()
+                .logout(logout -> logout.disable()
+//
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/login?logout=true")
+//                        .deleteCookies("JSESSIONID")
+//                        .permitAll()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
@@ -74,10 +74,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("" +
-                "https://effective-space-waddle-rwq5p6xj5xq2x45w-8080.app.github.dev",
-                "https://215089cd-3bbc-45c6-9c37-11d272599b67.lovableproject.com",
-                "http://127.0.0.1:8080")); // your frontend origin
+        config.setAllowedOrigins(List.of(
+            "https://7qczrlwj-8082.inc1.devtunnels.ms",
+                "http://localhost:8080")); // your frontend origin
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true); // if you're using cookies or sessions

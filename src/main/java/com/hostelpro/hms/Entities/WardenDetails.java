@@ -26,10 +26,10 @@ public class WardenDetails {
     @NotBlank
     private String name;
 
-//    @Pattern(
-//            regexp = "^(\\+91[-\\s]?)?\\d{10}$",
-//            message = "Contact number must be 10 digits, optionally starting with +91")
-//    @Column(length = 13, nullable = false)
+    @Pattern(
+            regexp = "^(\\+91[-\\s]?)?\\d{10}$",
+            message = "Contact number must be 10 digits, optionally starting with +91")
+    @Column(length = 13, nullable = false)
     private String contactNumber;
 
     private String address;

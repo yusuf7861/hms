@@ -8,11 +8,11 @@ import java.io.Serializable;
  * DTO for {@link com.hostelpro.hms.entities.WardenDetails}
  */
 public record WardenProfileDto(Long id, @NotBlank String name, String contactNumber, String address,
-                               HostelDto1 hostel) implements Serializable {
+                               HostelDto hostel) implements Serializable {
     /**
      * DTO for {@link com.hostelpro.hms.entities.Hostel}
      */
-    public record HostelDto1(Long id, @NotBlank String name,
+    public record HostelDto(Long id, @NotBlank String name,
                              @NotBlank(message = "Location is required") String location,
                              String contactNumber) implements Serializable {
     }

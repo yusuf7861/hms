@@ -15,10 +15,11 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-//                        .allowedOrigins("http://localhost:3000")
                         .allowedOrigins(
-                                "https://effective-space-waddle-rwq5p6xj5xq2x45w-8080.app.github.dev",
-                                "https://215089cd-3bbc-45c6-9c37-11d272599b67.lovableproject.com")
+                            "https://7qczrlwj-8082.inc1.devtunnels.ms",
+                            "https://effective-space-waddle-rwq5p6xj5xq2x45w-8080.app.github.dev",
+                            "https://215089cd-3bbc-45c6-9c37-11d272599b67.lovableproject.com", 
+                            "http://localhost:8080", "http://localhost:8081")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

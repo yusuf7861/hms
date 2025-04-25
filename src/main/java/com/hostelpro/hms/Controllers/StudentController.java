@@ -1,6 +1,7 @@
 package com.hostelpro.hms.controllers;
 
 import com.hostelpro.hms.configurations.CustomUserDetails;
+import com.hostelpro.hms.dto.ApiResponse;
 import com.hostelpro.hms.dto.PaymentDto;
 import com.hostelpro.hms.dto.StudentDetailsDto;
 import com.hostelpro.hms.dto.UpdateStudentDetailsDto;
@@ -11,6 +12,7 @@ import com.hostelpro.hms.mapper.StudentDetailsInfo;
 import com.hostelpro.hms.repositories.BookingRepository;
 import com.hostelpro.hms.services.PaymentService;
 import com.hostelpro.hms.services.StudentService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +32,7 @@ public class StudentController {
     private final BookingRepository bookingRepository;
     private final PaymentService paymentService;
 
-    //    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasRole('STUDENT')")
     @PostMapping("/register")
     public ResponseEntity<String> addStudentDetails(@RequestBody StudentDetailsDto studentDto, @AuthenticationPrincipal CustomUserDetails loggedInUser)
     {
@@ -38,19 +40,12 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Student details added successfully");
     }
 
-//    @PreAuthorize("hasRole('STUDENT')")
-    @GetMapping("/students")
-    public ResponseEntity<?> getAllStudents()
-    {
-        List<StudentDetailsInfo> studentDetails = studentService.getAllStudentDetails();
-        if (studentDetails.isEmpty())
-            return new ResponseEntity<>("No students found", HttpStatus.NOT_FOUND);
-        return ResponseEntity.ok(studentDetails);
-    }
-
-//    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/profile")
-    public ResponseEntity<?> getProfile(@AuthenticationPrincipal CustomUserDetails loggedInUser) {
+    public ResponseEntity<?> getProfile(@AuthenticationPrincipal CustomUserDetails loggedInUser, Principal principal, HttpSession session) {
+        System.out.println("🧠 Principal: " + principal);
+        System.out.println("👤 LoggedInUser: " + loggedInUser);
+        System.out.println("🪪 Session ID: " + session.getId());
         try {
             StudentDetailsDto detailsDto = studentService.getStudentDetailsById(loggedInUser.getId());
             return ResponseEntity.ok(detailsDto);
@@ -63,7 +58,7 @@ public class StudentController {
     @PutMapping("/update")
     public ResponseEntity<?> updateStudentDetails(@RequestBody UpdateStudentDetailsDto dto, @AuthenticationPrincipal CustomUserDetails loggedInUser) {
         studentService.updateStudentDetails(loggedInUser.getId(), dto);
-        return ResponseEntity.ok("Student details updated successfully");
+        return ResponseEntity.ok(new ApiResponse(true, "Student details updated successfully"));
     }
 
     @PostMapping("/book")
@@ -75,7 +70,7 @@ public class StudentController {
         System.out.println("Authenticated User ID: " + userDetails.getId());
         try {
             studentService.addBooking(roomId, userDetails.getId());
-            return ResponseEntity.ok("Booking added successfully");
+            return ResponseEntity.ok(new ApiResponse(true, "Booking added successfully"));
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -109,7 +104,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/payments/history")
+    @GetMapping("/payments")
     public ResponseEntity<?> getPaymentHistory(@AuthenticationPrincipal CustomUserDetails userDetails)
     {
         try {

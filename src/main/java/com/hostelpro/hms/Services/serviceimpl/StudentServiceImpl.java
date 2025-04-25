@@ -92,15 +92,30 @@ public class StudentServiceImpl implements StudentService, PaymentService {
     @Transactional
     @Override
     public void addBooking(Long roomId, Long userId) {
+        // 1. Validate user
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + userId + " not found"));
 
-        if (user.getStudentDetails() == null) {
+        StudentDetails student = user.getStudentDetails();
+        if (student == null) {
             throw new IllegalArgumentException("User does not have student details");
         }
 
-        Room room = roomRepository.findById(roomId).orElseThrow(() -> new ResolutionException("Room not found"));
+        // 2. Validate room
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("Room with ID " + roomId + " not found"));
 
+        // 3. Optional: Check if room is already booked by someone with an APPROVED booking
+        boolean alreadyApproved = bookingRepository.existsByRoomAndStatus(room, BookingStatus.APPROVED);
+        if (alreadyApproved) {
+            throw new IllegalStateException("Room is already booked and approved for another student");
+        }
+
+        // 4. Optional: Prevent duplicate booking by same student for same room
+        boolean alreadyRequested = bookingRepository.existsByRoomAndStudentDetailsAndStatus(room, student, BookingStatus.PENDING);
+        if (alreadyRequested) {
+            throw new IllegalStateException("You already have a pending booking for this room");
+        }
         Booking newbooking = new Booking();
         newbooking.setStudentDetails(user.getStudentDetails());
         newbooking.setActive(true);

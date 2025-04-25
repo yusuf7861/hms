@@ -14,5 +14,5 @@ public interface StudentDetailsRepository extends JpaRepository<StudentDetails, 
     Long user(User user);
     List<StudentDetailsInfo> findAllBy();
     StudentDetailsDto getStudentDetailsById(Long id);
-
+    List<StudentDetails> findByHostelId(Long id);
 }

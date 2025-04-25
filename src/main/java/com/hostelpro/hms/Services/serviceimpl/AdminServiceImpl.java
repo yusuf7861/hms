@@ -2,18 +2,26 @@ package com.hostelpro.hms.services.serviceimpl;
 
 import com.hostelpro.hms.dto.HostelDto;
 import com.hostelpro.hms.dto.Requests.RegisterRequest;
+import com.hostelpro.hms.dto.RoomDto;
+import com.hostelpro.hms.dto.WardenDetailsDto;
 import com.hostelpro.hms.entities.Enum.Role;
 import com.hostelpro.hms.entities.Hostel;
+import com.hostelpro.hms.entities.Room;
 import com.hostelpro.hms.entities.User;
+import com.hostelpro.hms.entities.WardenDetails;
+import com.hostelpro.hms.exceptions.ResourceNotFoundException;
+import com.hostelpro.hms.mapper.WardenDetailsMapper;
 import com.hostelpro.hms.repositories.HostelRepository;
+import com.hostelpro.hms.repositories.RoomRepository;
 import com.hostelpro.hms.repositories.UserRepository;
+import com.hostelpro.hms.repositories.WardenDetailsRepository;
 import com.hostelpro.hms.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +32,16 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoomRepository roomRepository;
+    @Autowired
+    private WardenDetailsRepository wardenDetailsRepository;
+    @Autowired
+    private WardenDetailsMapper wardenDetailsMapper;
+
 
     public AdminServiceImpl(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -55,4 +72,11 @@ public class AdminServiceImpl implements AdminService {
         userRepository.save(user);
     }
 
+    @Override
+    public List<WardenDetailsDto> getAllWardens() {
+        List<WardenDetails> wardens = wardenDetailsRepository.findAll();
+        return wardens.stream()
+                .map(wardenDetailsMapper::toDto)
+                .toList();
+    }
 }

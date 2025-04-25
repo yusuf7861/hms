@@ -1,6 +1,6 @@
 package com.hostelpro.hms.controllers;
 
-import com.hostelpro.hms.mapper.HostelDtoInfo;
+import com.hostelpro.hms.dto.HostelDtoInfo;
 import com.hostelpro.hms.services.HostelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
