@@ -1,12 +1,14 @@
-package com.hostelpro.hms.Controllers;
+package com.hostelpro.hms.controllers;
 
-import com.hostelpro.hms.DTOs.Requests.LoginRequest;
-import com.hostelpro.hms.DTOs.Requests.RegisterRequest;
-import com.hostelpro.hms.Services.ServiceImplementation.AuthService;
+import com.hostelpro.hms.dto.Requests.LoginRequest;
+import com.hostelpro.hms.dto.Requests.RegisterRequest;
+import com.hostelpro.hms.services.serviceimpl.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,10 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
-@RestController("/auth")
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
 public class AuthController {
 
     private final AuthService authService;
@@ -50,12 +55,25 @@ public class AuthController {
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                 SecurityContextHolder.getContext());
 
-        return ResponseEntity.ok("Login successful");
+
+        String role = authentication.getAuthorities().stream()
+                .findFirst()
+                .map(GrantedAuthority::getAuthority)
+                .orElse("UNKNOWN");
+
+        // creating response dto
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("userRole", role.replace("ROLE_", "")); // So frontend gets STUDENT, WARDEN, etc.
+        response.put("message", "Login successful");
+
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/login?logout=true")
-    public ResponseEntity<?> logoutSuccess() {
-        return ResponseEntity.ok("Logout successful");
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        session.invalidate(); // Destroys the session
+        return ResponseEntity.ok("User logged out successfully.");
     }
 
 }

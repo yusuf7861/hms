@@ -1,6 +1,6 @@
-package com.hostelpro.hms.Entities;
+package com.hostelpro.hms.entities;
 
-import com.hostelpro.hms.Entities.Enum.Role;
+import com.hostelpro.hms.entities.Enum.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

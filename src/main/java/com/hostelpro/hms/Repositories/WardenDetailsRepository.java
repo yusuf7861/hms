@@ -1,6 +1,6 @@
-package com.hostelpro.hms.Repositories;
+package com.hostelpro.hms.repositories;
 
-import com.hostelpro.hms.Entities.WardenDetails;
+import com.hostelpro.hms.entities.WardenDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
-package com.hostelpro.hms.Configurations;
+package com.hostelpro.hms.configurations;
 
-import com.hostelpro.hms.Services.CustomUserDetailService;
+import com.hostelpro.hms.services.serviceimpl.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +13,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -26,20 +31,27 @@ public class SecurityConfig {
     {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(
                         auth -> auth
-                                .anyRequest().permitAll()
-
-                        // implementation for RBAC (has error now)
-//                                .requestMatchers("/auth/**", "/register", "/login", "/css", "/js", "/images/**", "/v3/api-docs/**",
-//                                        "/swagger-ui/**",
-//                                        "/swagger-ui.html", "/api/student/register").permitAll()
-//                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-//                                .requestMatchers("/api/warden/**").hasRole("WARDEN")
-//                                .requestMatchers("/api/student/**").hasRole("STUDENT")
-//                                .anyRequest().authenticated()
+                                .requestMatchers(
+                                        "/register",
+                                        "/logout",
+                                        "/login",
+                                        "/hostels",
+                                        "/css/**",
+                                        "/js/**",
+                                        "/images/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html"
+                                ).permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/warden/**").hasRole("WARDEN")
+                                .requestMatchers("/api/student/**").hasRole("STUDENT")
+                                .anyRequest().authenticated()
                 )
-                .formLogin(form -> form.disable())
+                .formLogin(AbstractHttpConfigurer::disable)
 //                .formLogin(form -> form
 //                        .loginPage("/login")
 //                        .loginProcessingUrl("/auth/login")
@@ -57,6 +69,22 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 );
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("" +
+                "https://effective-space-waddle-rwq5p6xj5xq2x45w-8080.app.github.dev",
+                "https://215089cd-3bbc-45c6-9c37-11d272599b67.lovableproject.com",
+                "http://127.0.0.1:8080")); // your frontend origin
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true); // if you're using cookies or sessions
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
     @Bean

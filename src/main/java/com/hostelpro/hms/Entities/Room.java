@@ -1,4 +1,4 @@
-package com.hostelpro.hms.Entities;
+package com.hostelpro.hms.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;

@@ -1,4 +1,4 @@
-package com.hostelpro.hms.Entities;
+package com.hostelpro.hms.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -26,13 +26,15 @@ public class StudentDetails {
     private String name;
     @NotBlank
     private String guardianName;
-    @NotBlank
+    @Pattern(regexp = "^(\\+91)?\\d{10}$", message = "Contact number must be 10 digits, optionally starting with +91")
+    @Column(length = 13, nullable = false)
     private String guardianContactNumber;
 
     @NotBlank
     private String gender;
 
-    @Pattern(regexp = "\\d{10}")
+//    @Pattern(regexp = "^(\\+91[-\\s]?)?\\d{10}$", message = "Contact number must be 10 digits, optionally starting with +91")
+//    @Column(length = 13, nullable = false)
     private String phone;
 
     private String department;
@@ -41,9 +43,6 @@ public class StudentDetails {
 
     @NotBlank
     private String collegeName;
-
-    @OneToOne(mappedBy = "studentDetails", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Booking bookings;
 
     @OneToMany(mappedBy = "studentDetails", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Payment> payments;

@@ -1,7 +1,7 @@
-package com.hostelpro.hms.Services;
+package com.hostelpro.hms.services;
 
-import com.hostelpro.hms.DTOs.WardenDetailsDto;
+import com.hostelpro.hms.dto.WardenDetailsDto;
 
 public interface WardenService {
-    WardenDetailsDto saveWardenDetails(Long UserId, Long hostelId, WardenDetailsDto wardenDetailsDto);
+    void saveWardenDetails(Long UserId, Long hostelId, WardenDetailsDto wardenDetailsDto);
 }

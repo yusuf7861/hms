@@ -1,24 +1,27 @@
-package com.hostelpro.hms.Controllers;
+package com.hostelpro.hms.controllers;
 
-import com.hostelpro.hms.DTOs.HostelDto;
-import com.hostelpro.hms.DTOs.Requests.RegisterRequest;
-import com.hostelpro.hms.Entities.Hostel;
-import com.hostelpro.hms.Repositories.HostelRepository;
-import com.hostelpro.hms.Services.AdminService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
+
+import com.hostelpro.hms.dto.HostelDto;
+import com.hostelpro.hms.dto.Requests.RegisterRequest;
+import com.hostelpro.hms.services.AdminService;
+import com.hostelpro.hms.services.WardenService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api/admin")
+@RestController
+@RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminController {
 
-    @Autowired
-    private AdminService adminService;
+    private final AdminService adminService;
+    private final WardenService wardenService;
 
-    @PostMapping("/rooms/add")
+
+    @PostMapping("/hostel/add")
     public ResponseEntity<?> addHostel(HostelDto dto)
     {
         try {
@@ -36,6 +39,5 @@ public class AdminController {
         adminService.addWarden(registerRequest);
         return ResponseEntity.ok("Warden Registered successfully.");
     }
-
 
 }

@@ -1,4 +1,4 @@
-package com.hostelpro.hms.Exceptions;
+package com.hostelpro.hms.exceptions;
 
 public class BadRequestException extends RuntimeException {
     public BadRequestException(String message) {

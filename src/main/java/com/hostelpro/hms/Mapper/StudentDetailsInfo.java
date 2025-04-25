@@ -1,7 +1,7 @@
-package com.hostelpro.hms.Mapper;
+package com.hostelpro.hms.mapper;
 
 /**
- * Projection for {@link com.hostelpro.hms.Entities.StudentDetails}
+ * Projection for {@link com.hostelpro.hms.entities.StudentDetails}
  */
 public interface StudentDetailsInfo {
 //    Long getId();

@@ -1,4 +1,4 @@
-package com.hostelpro.hms.Entities;
+package com.hostelpro.hms.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -26,7 +26,10 @@ public class WardenDetails {
     @NotBlank
     private String name;
 
-    @Pattern(regexp = "\\d{10}")
+//    @Pattern(
+//            regexp = "^(\\+91[-\\s]?)?\\d{10}$",
+//            message = "Contact number must be 10 digits, optionally starting with +91")
+//    @Column(length = 13, nullable = false)
     private String contactNumber;
 
     private String address;

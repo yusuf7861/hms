@@ -1,4 +1,4 @@
-package com.hostelpro.hms.Configurations;
+package com.hostelpro.hms.configurations;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +25,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+        String fullROle = "ROLE_"+role;
+        System.out.println(fullROle);
+        return List.of(new SimpleGrantedAuthority("ROLE_"+role));
     }
 
     @Override

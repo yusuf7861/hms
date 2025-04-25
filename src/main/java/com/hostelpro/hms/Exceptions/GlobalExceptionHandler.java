@@ -1,4 +1,4 @@
-package com.hostelpro.hms.Exceptions;
+package com.hostelpro.hms.exceptions;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;

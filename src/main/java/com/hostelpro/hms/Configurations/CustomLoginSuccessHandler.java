@@ -1,4 +1,4 @@
-package com.hostelpro.hms.Configurations;
+package com.hostelpro.hms.configurations;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

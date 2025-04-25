@@ -1,7 +1,7 @@
-package com.hostelpro.hms.Services;
+package com.hostelpro.hms.services;
 
-import com.hostelpro.hms.DTOs.HostelDto;
-import com.hostelpro.hms.DTOs.Requests.RegisterRequest;
+import com.hostelpro.hms.dto.HostelDto;
+import com.hostelpro.hms.dto.Requests.RegisterRequest;
 
 public interface AdminService {
     void addHostel(HostelDto hostelDto);

@@ -1,8 +1,9 @@
-package com.hostelpro.hms.Entities;
+package com.hostelpro.hms.entities;
 
-import com.hostelpro.hms.Entities.Enum.BookingStatus;
+import com.hostelpro.hms.entities.Enum.BookingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,7 @@ public class Booking {
     @Column(nullable = false)
     private BookingStatus status = BookingStatus.PENDING;
 
-    @NotBlank
+    @NotNull
     private LocalDate requestDate = LocalDate.now();
 
     private LocalDate approvalDate;

@@ -1,6 +1,6 @@
-package com.hostelpro.hms.Repositories;
+package com.hostelpro.hms.repositories;
 
-import com.hostelpro.hms.Entities.User;
+import com.hostelpro.hms.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

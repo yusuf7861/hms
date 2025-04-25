@@ -1,7 +1,8 @@
-package com.hostelpro.hms.Entities;
+package com.hostelpro.hms.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,10 @@ public class Hostel {
     @NotBlank(message = "Location is required")
     private String location;
 
-    @NotBlank(message = "Contact number is required")
+//    @Pattern(
+//            regexp = "^(\\+91[-\\s]?)?\\d{10}$",
+//            message = "Contact number must be 10 digits, optionally starting with +91")
+//    @Column(length = 13, nullable = false)
     private String contactNumber;
 
     @OneToMany(mappedBy = "hostel", cascade = CascadeType.ALL, orphanRemoval = true)
