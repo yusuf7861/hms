@@ -52,9 +52,11 @@ public class StudentServiceImpl implements StudentService, PaymentService {
             student.setDepartment(studentDetailsDto.department());
 
             student.setUser(user);
+            student.setEmail(user.getEmail());
             studentDetailsRepository.save(student);
         } catch (Exception e)
         {
+            e.printStackTrace();
             throw new RuntimeException("Failed to save student details: " + e.getMessage());
         }
     }

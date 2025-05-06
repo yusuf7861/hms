@@ -79,4 +79,10 @@ public class AdminServiceImpl implements AdminService {
                 .map(wardenDetailsMapper::toDto)
                 .toList();
     }
+
+    @Override
+    public void assignHostelToWarden(Long wardenId, Long hostelId) {
+        Optional<WardenDetails> warden = wardenDetailsRepository.findById(wardenId);
+
+    }
 }

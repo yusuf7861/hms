@@ -33,13 +33,15 @@ public class StudentDetails {
     @NotBlank
     private String gender;
 
-//    @Pattern(regexp = "^(\\+91[-\\s]?)?\\d{10}$", message = "Contact number must be 10 digits, optionally starting with +91")
-//    @Column(length = 13, nullable = false)
+    @Pattern(regexp = "^(\\+91[-\\s]?)?\\d{10}$", message = "Contact number must be 10 digits, optionally starting with +91")
+    @Column(length = 13, nullable = false)
     private String phone;
 
     private String department;
 
     private String address;
+
+    private String email;
 
     @NotBlank
     private String collegeName;
@@ -54,8 +56,4 @@ public class StudentDetails {
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
-
-    public void setStudentId(Long userId) {
-    }
-
 }

@@ -11,4 +11,6 @@ public interface AdminService {
     void addHostel(HostelDto hostelDto);
     void addWarden(RegisterRequest registerRequest);
     List<WardenDetailsDto> getAllWardens();
+    void assignHostelToWarden(Long wardenId, Long hostelId);
+
 }

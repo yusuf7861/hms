@@ -39,7 +39,17 @@ public class WardenController {
 //        return ResponseEntity.ok(studentDetails);
 //    }
 
-
+    @PostMapping("/save-details")
+    public ResponseEntity<?> saveWardenDetails(@AuthenticationPrincipal CustomUserDetails userDetails, CreateWardenDto createWardenDto)
+    {
+        try {
+            wardenService.saveWardenDetails(userDetails.getId(), createWardenDto);
+            return ResponseEntity.ok("Warden details saved successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Failed to save warden details: " + e.getMessage());
+        }
+    }
 
     @GetMapping("/profile")
     public ResponseEntity<?> wardenProfile(@AuthenticationPrincipal CustomUserDetails userDetails){
@@ -165,7 +175,7 @@ public class WardenController {
     @PutMapping("/bookings/{bookingId}/reject")
     public ResponseEntity<?> rejectBooking(@PathVariable Long bookingId) {
         try {
-            wardenService.approveBooking(bookingId);
+            wardenService.rejectBooking(bookingId);
             return ResponseEntity.ok("Booking status updated successfully");
         } catch (Exception e) {
             e.printStackTrace();

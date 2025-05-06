@@ -5,7 +5,7 @@ import com.hostelpro.hms.dto.*;
 import java.util.List;
 
 public interface WardenService {
-    void saveWardenDetails(Long UserId, Long hostelId, CreateWardenDto dto);
+    void saveWardenDetails(Long UserId, CreateWardenDto dto);
     WardenProfileDto getWardenDetails(Long userId);
     List<RoomDto> getRooms(Long wardenId);
     void updateRoomAvailability(Long roomId, boolean available);

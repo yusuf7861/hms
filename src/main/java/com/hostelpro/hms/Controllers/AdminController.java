@@ -41,19 +41,6 @@ public class AdminController {
         return ResponseEntity.ok("Warden Registered successfully.");
     }
 
-    @PostMapping("/warden/save-details")
-    public ResponseEntity<?> saveWardenDetails(@AuthenticationPrincipal CustomUserDetails userDetails, Long hostelId, CreateWardenDto createWardenDto)
-    {
-        try {
-            wardenService.saveWardenDetails(userDetails.getId(), hostelId, createWardenDto);
-            return ResponseEntity.ok("Warden details saved successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Failed to save warden details: " + e.getMessage());
-        }
-    }
-
-
     @GetMapping("/wardens")
     public ResponseEntity<List<WardenDetailsDto>> getAllWardens() {
         try {

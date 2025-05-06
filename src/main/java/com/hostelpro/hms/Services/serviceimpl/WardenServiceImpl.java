@@ -51,14 +51,15 @@ public class WardenServiceImpl implements WardenService {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    public void saveWardenDetails(Long userId, Long hostelId, CreateWardenDto createWardenDto) {
+    public void saveWardenDetails(Long userId, CreateWardenDto createWardenDto) {
         try {
-
             User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-            Hostel hostel = hostelRepository.findById(hostelId).orElseThrow(() -> new ResourceNotFoundException("Hostel not found"));
+            //TODO: hostel should be assigned by ADMIN, Warden cannot assign a hostel to himself.
+//            Hostel hostel = hostelRepository.findById(hostelId).orElseThrow(() -> new ResourceNotFoundException("Hostel not found"));
 
             WardenDetails warden = wardenDetailsMapper.toEntity(createWardenDto);
             warden.setUser(user);
+            warden.setEmail(user.getEmail());
 
             wardenDetailsRepository.save(warden);
         } catch (UsernameNotFoundException | ResourceNotFoundException e) {
@@ -141,7 +142,6 @@ public class WardenServiceImpl implements WardenService {
         bookingRepository.save(booking);
     }
 
-    @Transactional
     @Override
     public void rejectBooking(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
